@@ -118,7 +118,7 @@ By selecting an item in you page you can see:
 ### PhpStorm Integration
 Magento Chrome Toolbar can be integrated with **PhpStorm** to directly open the template file you wish to edit.
 
-> You need to install **Remote Call Plugin** in PhpStorm, then enable the feature from Magento Admin.
+> You need to install **IDE Remote Control** in PhpStorm, then enable the feature from Magento Admin.
 
 
 [1]: https://chrome.google.com/webstore/detail/magespecialist-devtools-f/odbnbnenehdodpnebgldhhmicbnlmapj?authuser=3
