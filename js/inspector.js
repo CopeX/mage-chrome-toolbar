@@ -78,6 +78,10 @@ function onItemInspected() {
     } else {
       $('#inspected').css('display', 'block');
       $('#inspected').html(getBlockInfo(res));
+      $('.phpstorm-link').click(function(e) {
+        e.preventDefault();
+        fetch(e.target.href);
+      });
     }
   });
 }
