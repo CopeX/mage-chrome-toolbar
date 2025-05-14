@@ -1,4 +1,5 @@
 {
+  "manifest_version": 3,
   "name": "MageSpecialist DevTools for Magento",
   "description": "This extension can be used with MSP_DevTools module for Magento",
   "version": "3.3.4",
@@ -9,19 +10,17 @@
     "128": "images/icon128x128.png"
   },
 
-  "browser_action": {
+  "action": {
     "default_icon": "images/icon_off.png",
     "default_title": "Magento DevTools by MageSpecialist",
     "default_popup": "popup.html"
   },
   "permissions": [
     "activeTab",
-    "*://*/*"
+    "scripting"
   ],
   "background": {
-    "scripts": [
-      "js/background.js"
-    ]
+    "service_worker": "js/background.js"
   },
   "content_scripts": [
     {
