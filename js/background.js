@@ -52,9 +52,9 @@ chrome.runtime.onConnect.addListener(function (port) {
         console.log("Icon: " + msg.payload);
 
         if (msg.payload === 'online') {
-          chrome.browserAction.setIcon({path: "images/icon.png", tabId: msg.tabId});
+          chrome.action.setIcon({path: "images/icon.png", tabId: msg.tabId});
         } else {
-          chrome.browserAction.setIcon({path: "images/icon_off.png", tabId: msg.tabId});
+          chrome.action.setIcon({path: "images/icon_off.png", tabId: msg.tabId});
         }
       }
 
@@ -66,7 +66,13 @@ chrome.runtime.onConnect.addListener(function (port) {
 
   port.onDisconnect.addListener(function () {
     console.log("Disconnected: " + portName);
-    mspPorts[portName] = null;
+    // Clean up the port reference
+    delete mspPorts[portName];
+
+    // Check for runtime errors and log them
+    if (chrome.runtime.lastError) {
+      console.log("Port disconnect error: " + chrome.runtime.lastError.message);
+    }
   });
 });
 
@@ -76,7 +82,19 @@ function sendMessage(msg) {
   console.log("Message for " + msg.to + "(" + msg.tabId + "): " + msg.type);
 
   if (mspPorts[portName]) {
-    mspPorts[portName].postMessage(msg);
+    try {
+      mspPorts[portName].postMessage(msg);
+      // Check for runtime errors after sending
+      if (chrome.runtime.lastError) {
+        console.log("Port disconnected: " + chrome.runtime.lastError.message);
+        // Clean up the disconnected port
+        mspPorts[portName] = null;
+      }
+    } catch (error) {
+      console.log("Error sending message to " + portName + ": " + error.message);
+      // Clean up the disconnected port
+      mspPorts[portName] = null;
+    }
   } else {
     console.log(msg.to + " is not defined");
   }
